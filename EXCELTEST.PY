@@ -1,35 +1,31 @@
 from openpyxl import Workbook
 wb = Workbook()
-
 # grab the active worksheet
 ws = wb.active
 
-# Data can be assigned directly to cells
-
 from openpyxl.drawing.image import Image
-from openpyxl.cell import cell
-img = Image('sample_image.jpg')
-img.width = 535
-img.height = 366
-ws.add_image(img, 'c5')
-ws.column_dimensions['c'].width = 66.25
-ws.column_dimensions['d'].width = 66.25
-ws.column_dimensions['b'].width = 1.63
-ws.column_dimensions['e'].width = 1.63
-ws.column_dimensions['h'].width = 1.63
-ws.column_dimensions['g'].width = 22.38
-ws.column_dimensions['f'].width = 22.38
-ws.row_dimensions[3].height = 13.5
-ws.row_dimensions[4].height = 91.5
-ws.row_dimensions[5].height = 91.5
-ws.row_dimensions[6].height = 91.5
-ws.row_dimensions[7].height = 91.5
-ws.row_dimensions[8].height = 91.5
-ws.row_dimensions[9].height = 91.5
-ws.row_dimensions[10].height = 91.5
-ws.row_dimensions[11].height = 91.5
-ws.row_dimensions[12].height = 91.5
-ws.row_dimensions[13].height = 91.5
+from openpyxl.styles import PatternFill, Alignment, Font
+from openpyxl.styles.borders import Border, Side
+
+img1 = Image('sample_image.jpg')
+img1.width = 531
+img1.height = 366
+ws.add_image(img1, 'c5')
+
+a = ['c','d','b','e','h','g','f']
+for i in range(7):
+    if i == 0 or i == 1:
+        ws.column_dimensions[a[i]].width = 66.25
+    elif i == 5 or i == 6:
+        ws.column_dimensions[a[i]].width = 22.38
+    else:
+        ws.column_dimensions[a[i]].width = 1.63
+
+for i in range(3,15):
+    if i == 3 or i == 14:
+        ws.row_dimensions[i].height = 13.5
+    else:
+        ws.row_dimensions[i].height = 91.5
 
 ws.merge_cells('c4:d4')
 ws.merge_cells('f4:g4')
@@ -39,63 +35,73 @@ top_left_cell.value = '사진'
 top_left_cell2 = ws['f4']
 top_left_cell2.value = '거래조건'
 
-# ws.row_dimensions
-
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Font
 font = Font(name='경기천년제목 Bold', size=24, color='205c98')
 alignment=Alignment(horizontal= 'center', vertical='center')
+fillblue = PatternFill(fill_type='solid', fgColor='205c98')
 
-fill = PatternFill(fill_type=None, start_color='205c98', end_color='205c98')
-ws['b3:h3'].fill = fill #여기부터 다시시작
+for i in range(3, 15):
+    ws.cell(row=i, column=2).fill = fillblue
+for i in range(3, 15):
+    ws.cell(row=i, column=5).fill = fillblue
+for i in range(3, 15):
+    ws.cell(row=i, column=8).fill = fillblue
+for i in range(3, 9):
+    ws.cell(row=3, column=i).fill = fillblue
+for i in range(3, 9):
+    ws.cell(row=4, column=i).fill = fillblue
+for i in range(3, 9):
+    ws.cell(row=14, column=i).fill = fillblue
+
+ws['c4'].border = Border( left=Side(style='thin', color='ffffff'),
+                          right=Side(style='thin', color='ffffff'),
+                          top=Side(style='thin', color='ffffff')
+                          )
+ws['d4'].border = Border( left=Side(style='thin', color='ffffff'),
+                          right=Side(style='thin', color='ffffff'),
+                          top=Side(style='thin', color='ffffff')
+                          )
+ws['f4'].border = Border( left=Side(style='thin', color='ffffff'),
+                          right=Side(style='thin', color='ffffff'),
+                          top=Side(style='thin', color='ffffff')
+                          )
+ws['g4'].border = Border( left=Side(style='thin', color='ffffff'),
+                          right=Side(style='thin', color='ffffff'),
+                          top=Side(style='thin', color='ffffff')
+                          )
+for i in range(5, 14):
+    ws.cell(row=i, column=2).border = Border( right=Side(style='thin', color='ffffff')
+                                              )
+for i in range(5, 14):
+    ws.cell(row=i, column=5).border = Border( left=Side(style='thin', color='ffffff'),
+                          right=Side(style='thin', color='ffffff')
+                                             )
+for i in range(5, 14):
+    ws.cell(row=i, column=8).border = Border( left=Side(style='thin', color='ffffff')
+                                             )
+for i in range(3, 8):
+    if i == 5:
+        continue
+    ws.cell(row=14, column=i).border = Border(top=Side(style='thin', color='ffffff'))
 
 ws['c4'].font = Font(name='경기천년제목 Bold', size=36, color='ffffff')
 ws['c4'].alignment = alignment
 
-ws['f4'].font = Font(name='경기천년제목 Bold', size=36, color='ffffff')
-ws['f4'].alignment = alignment
+for i in range(4,14):
+    if i == 4:
+        ws['f4'].font = Font(name='경기천년제목 Bold', size=36, color='ffffff')
+        ws['f4'].alignment = alignment
+    else:
+        ws.cell(row=i, column=6).font = font
+        ws.cell(row=i, column=6).alignment = alignment
 
-
-# Rows can also be appended
 ws['f5'] = '층수'
-ws['f5'].font = font
-ws['f5'].alignment = alignment
-
 ws['f6'] = '룸형태'
-ws['f6'].font = font
-ws['f6'].alignment = alignment
-
 ws['f7'] = '크기'
-ws['f7'].font = font
-ws['f7'].alignment = alignment
-
 ws['f8'] = '주방구조'
-ws['f8'].font = font
-ws['f8'].alignment = alignment
-
 ws['f9'] = '보증금'
-ws['f9'].font = font
-ws['f9'].alignment = alignment
-
 ws['f10'] = '월세'
-ws['f10'].font = font
-ws['f10'].alignment = alignment
-
 ws['f11'] = '관리비'
-ws['f11'].font = font
-ws['f11'].alignment = alignment
-
 ws['f12'] = '보증금조정'
-ws['f12'].font = font
-ws['f12'].alignment = alignment
-
 ws['f13'] = '입주시기'
-ws['f13'].font = font
-ws['f13'].alignment = alignment
-
-
-# Python types will automatically be converted
-import datetime
-# ws['A2'] = datetime.datetime.now()
-
 # Save the file
-wb.save("sample.xlsx")
+wb.save(filename='sample.xlsx')
